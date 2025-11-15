@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeffrey's Cover Playlist</title>
+    <title>Jeffrey's Playlist</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -13,6 +13,16 @@
             --text-primary: #ffffff;
             --text-secondary: #98989f;
             --player-height: 90px;
+            --background-color: #000;
+        }
+
+        :root[data-theme="light"] {
+            --primary-color: #ffffff;
+            --secondary-color: #f2f2f7;
+            --accent-color: #007aff;
+            --text-primary: #000000;
+            --text-secondary: #8e8e93;
+            --background-color: #ffffff;
         }
 
         * {
@@ -23,12 +33,13 @@
         }
 
         body {
-            background-color: #000;
+            background-color: var(--background-color);
             color: var(--text-primary);
             height: 100vh;
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .status-bar {
@@ -61,6 +72,50 @@
         .header h1 {
             font-size: 28px;
             font-weight: 700;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .playlist-folders {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        .folder-btn {
+            padding: 8px 16px;
+            background-color: var(--secondary-color);
+            border: none;
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .folder-btn.active {
+            background-color: var(--accent-color);
+            color: white;
         }
 
         .library-section {
@@ -205,7 +260,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, #1c1c1e 0%, #000 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--background-color) 100%);
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -451,11 +506,23 @@
     <!-- Header -->
     <div class="header">
         <h1>My Music</h1>
+        <div class="header-controls">
+            <button class="theme-toggle" id="theme-toggle" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Playlist Folders -->
+    <div class="playlist-folders">
+        <button class="folder-btn active" data-folder="all">All Songs</button>
+        <button class="folder-btn" data-folder="opm">OPM Favorites</button>
+        <button class="folder-btn" data-folder="poprock">Pop Rock Versions</button>
     </div>
 
     <!-- Library Section -->
     <div class="library-section">
-        <h2 class="section-title">OPM Favorites</h2>
+        <h2 class="section-title" id="folder-title">All Songs</h2>
         <ul class="song-list" id="song-list">
             <!-- Songs will be dynamically loaded here -->
             <div id="loading-songs" style="text-align: center; padding: 20px;">
@@ -551,57 +618,8 @@
                 duration: "3:30",
                 src: "./mymusic/Martyr Nyebera (90's Pop RnB Version).mp3",
                 albumArt: "./album-art/Kamikazee (Maharot).jpg",
-                lyrics: [
-                    
-    "Kinokompleto mo ang araw ko",
-    "Sa tuwing inaaway mo",
-    "Paggising sa umaga mukha mo ang nakita",
-    "Wala pang nagawa nakasimangot na",
-    "At pagsapit ng gabi tampo lalong lumalaki",
-    "Ang gusto ko lambingan ngunit may unan na namamagitan",
-    "Ang almusal ay sigawan",
-    "Ang hapunan natin ay tampuhan",
-    "Ang mirienda pagdududa",
-    "Pero mahal kita",
-    "Wala ng hahanapin pang iba",
-    "Handa kong magtiis",
-    "Kahit na",
-    "Away away away na 'to",
-    "Nahuli lang ng ilang minuto",
-    "Di na kinibo",
-    "Natrapik lang sa kanto",
-    "Di naman gwapo",
-    "Naisip mo agad nang chiks ako",
-    "Simple lang naman ang pinagmulan",
-    "Pinahaba ang usapan",
-    "Di naman kailangan",
-    "Mahabang away na naman",
-    "Ang almusal ay sigawan",
-    "Ang hapunan natin ay tampuhan",
-    "Ang mirienda pagdududa",
-    "Pero mahal kita",
-    "Wala ng hahanapin pang iba",
-    "Handa kong magtiis",
-    "Kahit na",
-    "Away away away na 'to",
-    "Kahit na sabihin na naliligo ka sa sampal",
-    "Di mo masasabi na hindi kita minamahal",
-    "Ang dami mong babae",
-    "Wala ka pang trabaho",
-    "Ngunit kahit ganun ay nandito lang ako",
-    "Nandito lang ako",
-    "Ang almusal ay sigawan",
-    "Ang Hapunan natin ay tampuhan",
-    "Ang Mirienda pagdududa",
-    "Pero mahal kita",
-    "Wala ng hahanapin pang iba",
-    "Handa kong magtiis",
-    "Kahit na",
-    "Away away away na 'to (away away away na 'to)",
-    "Away away away na 'to (away away away na 'to)",
-    "Away away away na 'to"
-
-                ]
+                folder: "opm",
+                lyrics: []
             },
             {
                 title: "Para Sa Akin (80s City Pop)",
@@ -609,40 +627,8 @@
                 duration: "3:47",
                 src: "./mymusic/Para Sa Akin (80s City Pop).mp3",
                 albumArt: "./album-art/Sitti (Cafe Bossa).jfif",
-                lyrics: [
-                    
-    "Kung ika'y magiging akin",
-    "Di ka na muling luluha pa",
-    "Pangakong di ka lolokohin",
-    "Ng puso kong nagmamahal",
-    "Kung ako ay papalarin",
-    "Na ako'y iyong mahal na rin",
-    "Pangakong ikaw lang ang iibigin magpakailanman",
-    "Di kita pipilitin",
-    "Sundin mo pang",
-    "Iyong damdamin hayaan na lang tumibok ang puso mo",
-    "Para sa akin",
-    "Kung ako ay mamalasin",
-    "At mayron ka ng ibang mahal",
-    "Ngunit patuloy ang aking pag-ibig magpakailanman",
-    "Di kita pipilitin",
-    "Sundin mo pang",
-    "Iyong damdamin hayaan na lang tumibok ang puso mo",
-    "Para sa akin",
-    "Kung ako ay papalarin",
-    "Na ako'y iyong mahal na rin",
-    "Pangakong ikaw lang ang iibigin magpakailanman",
-    "Di kita pipilitin",
-    "Sundin mo pang",
-    "Iyong damdamin hayaan na lang tumibok ang puso mo",
-    "Para sa akin",
-    "Di kita pipilitin",
-    "Sundin mo pang",
-    "Iyong damdamin hayaan na lang tumibok ang puso mo",
-    "Para sa akin",
-    "Para sa akin"
-
-                ]
+                folder: "opm",
+                lyrics: []
             },
             {
                 title: "With A Smile (80s City Pop)",
@@ -650,50 +636,8 @@
                 duration: "3:43",
                 src: "./mymusic/With A Smile (80s City Pop).mp3",
                 albumArt: "./album-art/Eraserheads (Circus).jfif",
-                lyrics: [
-                    
-    "Lift your head, baby don't be scared",
-    "Of the things that could go wrong along the way",
-    "You'll get by with a smile",
-    "You can't win at everything but you can try",
-    "Baby, you don't have to worry",
-    "'Cause there ain't no need to hurry",
-    "No one ever said that there's an easy way",
-    "When they're closing all their doors",
-    "They don't want you anymore",
-    "This sounds funny but I'll say it anyway",
-    "Girl, I'll stay through the bad times",
-    "Even if I have to fetch you everyday",
-    "We'll get by if you smile",
-    "You can never be too happy in this life",
-    "'Cause in a world where everybody",
-    "Hates a happy ending story",
-    "It's a wonder love can make the world go round",
-    "But don't let it bring you down",
-    "And turn your face into a frown",
-    "You'll get along with a little prayer and a song",
-    "Tidididi, tidididi, tidididi, didi, didi, dididi",
-    "Let me hear you sing it",
-    "Tidididi, tidididi, tidididi, didi, didi, dididi",
-    "'Cause in a world where everybody",
-    "Hates a happy ending story",
-    "It's a wonder love can make the world go round",
-    "But don't let it bring you down",
-    "And turn your face into a frown",
-    "You'll get along with a little prayer and a song",
-    "Lift your head, baby don't be scared",
-    "Of the things that could go wrong along the way",
-    "You'll get by with a smile",
-    "Now it's time to kiss away those tears goodbye",
-    "Tidididi, tidididi, tidididi, didi, didi, dididi",
-    "Let me hear you sing it",
-    "Tidididi, tidididi, tidididi, didi, didi, dididi",
-    "Tidididi, tidididi, tidididi, didi, didi, dididi",
-    "Tidididi, tidididi, tidididi, didi, didi, dididi",
-    "Tidididi, tidididi, tidididi, didi, didi, dididi",
-    "With a smile"
-
-                ]
+                folder: "opm",
+                lyrics: []
             },
             {
                 title: "Jeepney (Acoustic Cover)",
@@ -701,58 +645,8 @@
                 duration: "5:26",
                 src: "./mymusic/Jeepney (Acoustic Cover).mp3",
                 albumArt: "./album-art/Sponge Cola (Palabas).jfif",
-                lyrics: [
-    "Bumaba ako sa jeepney",
-    "Kung saan tayo'y dating magkatabi",
-    "Magkahalik ang pisngi nating dalwa",
-    "Nating dalawa",
-    "",
-    "Panyo mo sa aking bulsa",
-    "Ang amoy mo'y naroon pa rin",
-    "Tawa nati'y humahalay",
-    "Sa init nating dalawa",
-    "",
-    "Subalit ngayo'y wala na (wala na)",
-    "Ikaw ay lumayo na (lumayo na, ahhh)",
-    "",
-    "Naaalala ko ang mga gabing",
-    "Nakahiga sa ilalim ng kalawakan",
-    "Naaalala ko ang mga gabing",
-    "Magkatabi sa ulan",
-    "",
-    "Kulay nang i'yong ngiti",
-    "At tikwas ng i'yong buhok",
-    "Ang lambot ng i'yong labi",
-    "Nang i'yong labi",
-    "",
-    "Kahit anino mo sa malayo",
-    "Ay nais masulyapan",
-    "Upang mapawi ang lamig",
-    "",
-    "Subalit ngayo'y wala na (wala na)",
-    "Ikaw ay lumayo na (lumayo na, ahhh)",
-    "",
-    "Naaalala ko ang mga gabing",
-    "Nakahiga sa ilalim ng kalawakan",
-    "Naaalala ko ang mga gabing",
-    "Magkatabi sa ulan",
-    "",
-    "Subalit ngayo'y wala na",
-    "Ikaw ay lumayo na (lumayo na, ahhh)",
-    "",
-    "Naaalala ko ang mga gabing",
-    "Nakahiga sa ilalim ng kalawakan",
-    "Naaalala ko ang mga gabing",
-    "Magkatabi sa ulan",
-    "",
-    "Naaalala mo ang mga gabing",
-    "Nakahiga sa ilalim ng kalawakan",
-    "Naaalala ko ang mga gabing",
-    "Magkatabi sa ulan",
-    "Magkatabi sa ulan"
-	
-	]
-
+                folder: "opm",
+                lyrics: []
             },
             {
                 title: "Kailan",
@@ -760,177 +654,178 @@
                 duration: "4:38",
                 src: "./mymusic/Kailan.mp3",
                 albumArt: "./album-art/Smokey Mountain (Paraiso).jfif",
-                lyrics: [
-                   
-    "Bakit kaya nangangamba",
-    "Sa tuwing ika'y nakikita",
-    "Sana nama'y magpakilala",
-    "",
-    "Ilang ulit nang nagkabangga",
-    "Aklat kong dala'y pinulot mo pa",
-    "'Di ka pa rin nagpakilala",
-    "",
-    "Bawat araw sinusundan",
-    "'Di ka naman tumitingin",
-    "Ano'ng aking dapat gawin",
-    "",
-    "Bakit kaya umiiwas",
-    "Binti ko ba'y mayroong gasgas",
-    "Nais ko lang magpakilala",
-    "",
-    "Dito'y mayroon sa puso ko",
-    "Munting puwang laan sa 'yo",
-    "Maaari na bang magpakilala",
-    "",
-    "Bawat araw sinusundan",
-    "'Di ka naman tumitingin",
-    "Ano'ng aking dapat gawin",
-    "",
-    "Kailan (kailan), kailan mo ba mapapansin ang aking lihim",
-    "Kahit ano'ng aking gawin, 'di mo pinapansin",
-    "Kailan (kailan), kailan hahaplusin ang pusong bitin na bitin",
-    "Kahit ano'ng gawing lambing, 'di mo pa rin pansin",
-    "",
-  
-    "",
-    "Dito'y mayroon sa puso ko",
-    "Munting puwang laan sa 'yo",
-    "Maaari na bang magpakilala",
-    "",
-    "Bawat araw sinusundan",
-    "'Di ka naman tumitingin",
-    "Ano'ng aking dapat gawin",
-    "",
-    "Kailan, kailan mo ba mapapansin ang aking lihim",
-    "Kahit ano'ng aking gawin, 'di mo pinapansin",
-    "Kailan, kailan hahaplusin ang pusong bitin na bitin",
-    "Kahit ano'ng gawing lambing, 'di mo pa rin pansin"
-]
-                
+                folder: "opm",
+                lyrics: []
             },
-			
-			
-			
-			  {
+            {
                 title: "Gusto Kita (Acoustic Cover)",
                 artist: "Gino Padilla",
                 duration: "4:57",
                 src: "./mymusic/Gusto Kita (Acoustic Cover).mp3",
                 albumArt: "./album-art/Gino Padilla (Shifting Gears).jfif",
-                lyrics: [
-    "Gusto kita",                
-    "Sa puso ko'y ikaw lang ang mahalaga",
-    "Pilitin mang limutin ka ay hindi ko magagawa",
-    "Parang alipin mo ang isip at damdamin ko",
-    "",
-    "Gusto kita",
-    "'Pagkat ang kilos mo'y sadyang ibang-iba",
-    "Mas simple at malambing pa, katangiang 'di mo sadya",
-    "Pag-ibig kong ito'y hindi na magbabago pa",
-    "",
-    "Kahit sabihin na mali ako",
-    "Alipin mo o bihag mo, ako'y iyong-iyo",
-    "Kung pag-ibig na ang pag-uusapan",
-    "'Di ko na ililihim pa ang damdamin ko sa'yo",
-    "Sa akin ay gusto kita",
-    "",
-    "Kahit sabihin na mali ako",
-    "Alipin mo o bihag mo, ako'y iyong-iyo",
-    "Kung pag-ibig na ang pag-uusapan",
-    "'Di ko na ililihim pa ang damdamin ko sa'yo",
-    "Sa akin ay gusto kita",
-    "",
-    "Gusto kita",
-    "'Pagkat ang kilos mo'y sadyang ibang-iba",
-    "Mas simple at malambing pa, katangiang 'di mo sadya",
-    "Pag-ibig kong ito'y hindi na magbabago pa",
-    "",
-    "Kahit sabihin na mali ako",
-    "Alipin mo o bihag mo, ako'y iyong-iyo",
-    "Kung pag-ibig na ang pag-uusapan",
-    "'Di ko na ililihim pa ang damdamin ko sa'yo",
-    "Sa akin ay gusto kita",
-    "",
-    "Kahit sabihin na mali ako",
-    "Alipin mo o bihag mo, ako'y iyong-iyo",
-    "Kung pag-ibig na ang pag-uusapan",
-    "'Di ko na ililihim pa ang damdamin ko sa'yo",
-    "Sa akin ay gusto kita",
-    "",
-    "Gusto kita, mm-ah"
-]
-                
+                folder: "opm",
+                lyrics: []
             },
-			
-			
-			    {
+            {
                 title: "Halaga (80s City Pop Ballad Female Version)",
                 artist: "Parokya ni Edgar",
                 duration: "4:18",
                 src: "./mymusic/Halaga (80s City Pop Ballad Female Version).mp3",
                 albumArt: "./album-art/Parokya ni Edgar (Bigotilyo).jfif",
-                lyrics: 
-                   
-   [
-    "Umiiyak ka na naman",
-    "Langya talaga, wala ka bang ibang alam",
-    "Namumugtong mga mata",
-    "Kailan pa ba kaya ikaw magsasawa",
-    "",
-    "Sa problema na iyong pinapasan",
-    "Hatid sayo ng boyfriend mong hindi mo maintindihan",
-    "May kwento kang pang-drama na naman",
-    "",
-    "Parang pang TV na walang katapusan",
-    "Hanggang kailan ka bang ganyan",
-    "Hindi mo ba alam na walang pupuntahan",
-    "Ang pagtiyaga mo dyan sa boyfriend mong tanga",
-    "Na wala nang ginawa kundi ang paluhain ka",
-    "",
-    "Sa libu-libong pagkakataon na tayoy nag-kasama",
-    "Iilang ulit palang kitang nakitang masaya",
-    "Naiinis akong isipin na ginaganyan ka nya",
-    "Siguro ay hindi niya lang alam ang iyong",
-    "Tunay na halaga",
-    "",
-    "Hindi na dapat pag-usapan pa",
-    "Nagpapagod na rin ako sa aking kakasalita",
-    "Hindi ka rin naman nakikinig",
-    "Kahit sobrang pagod na ang aking bibig",
-    "",
-    "Sa mga payo kong di mo pinapansin",
-    "Akala mo'y nakikinig di rin naman tatanggapin",
-    "Ayoko nang isipin pa",
-    "Di ko alam 'bat di mo makayanan na iwanan sya",
-    "",
-    "Ang dami-dami naman diyang iba",
-    "Wag kang mangangambang baka wala ka nang ibang makita",
-    "Na lalake na magmamahal sayo",
-    "At hinding hindi nya sasayangin ang pag-ibig mo",
-    "",
-    "Sa libu-libong pagkakataon na tayoy nag-kasama",
-    "Iilang ulit palang kitang nakitang masaya",
-    "Naiinis akong isipin na ginaganyan ka nya",
-    "Siguro ay hindi niya lang alam ang iyong",
-    "Tunay na halaga",
-    "",
-    "Minsan hindi ko maintindihan",
-    "Parang ang buhay natin ay napagti-tripan",
-    "Medyo malabo yata ang mundo",
-    "Binabasura ng iba ang syang pinapangarap ko",
-    "",
-    "Sa libu-libong pagkakataon na tayoy nag-kasama",
-    "Iilang ulit palang kitang nakitang masaya",
-    "Naiinis akong isipin na ginaganyan ka nya",
-    "Siguro ay hindi niya lang alam ang iyong",
-    "Tunay na halaga"
-]
-                
+                folder: "opm",
+                lyrics: []
+            },
+			{
+                title: "Fallin (RnB Cover)",
+                artist: "Janno Gibbs",
+                duration: "4:23",
+                src: "./mymusic/Fallin (RnB Cover).mp3",
+                albumArt: "./album-art/Janno Gibbs (Anthology).jfif",
+                folder: "opm",
+                lyrics: []
             },
 			
 			
+			/**POP ROCK**/
 			
-       ];
+				{
+                title: "First Love (Pop Punk Rock Version)",
+                artist: "Utada Hikaru",
+                duration: "4:00",
+                src: "./poprock/First Love (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Utada Hikaru.jfif",
+                folder: "poprock",
+                lyrics: []
+            },
+			
+			{
+                title: "Here In My Heart (Pop Punk Rock Version)",
+                artist: "Plus One",
+                duration: "3:04",
+                src: "./poprock/Here In My Heart (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Plus One.jfif",
+                folder: "poprock",
+                lyrics: []
+            },
+			
+				{
+                title: "Pretty Boy (Pop Punk Version)",
+                artist: "M2M",
+                duration: "4:28",
+                src: "./poprock/Pretty Boy (Pop Punk Version).mp3",
+                albumArt: "./album-art/M2M.jfif",
+                folder: "poprock",
+                lyrics: []
+            },
+			
+			{
+                title: "Sometimes (Pop Punk Version)",
+                artist: "Britney Spears",
+                duration: "3:58",
+                src: "./poprock/Sometimes (Pop Punk Version).mp3",
+                albumArt: "./album-art/Britney Spears.jfif",
+                folder: "poprock",
+                lyrics: []
+            },		
+			{
+                title: "Never Had A Dream Come True (Pop Punk Rock Version)",
+                artist: "S Club 7",
+                duration: "3:18",
+                src: "./poprock/Never Had A Dream Come True (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/S Club 7.jfif",
+                folder: "poprock",
+                lyrics: []
+            },	
+			{
+                title: "One For Sorrow (Pop Punk Rock Version)",
+                artist: "Steps",
+                duration: "4:24",
+                src: "./poprock/One For Sorrow (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Steps.jfif",
+                folder: "poprock",
+                lyrics: []
+            },	
+			{
+                title: "Dreaming Of You (Pop Punk Rock Version)",
+                artist: "Selena",
+                duration: "3:46",
+                src: "./poprock/Dreaming Of You (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Selena.jfif",
+                folder: "poprock",
+                lyrics: []
+            },	
+			{
+                title: "Evergreen (Pop Punk Rock Version)",
+                artist: "Westlife",
+                duration: "3:40",
+                src: "./poprock/Evergreen (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Westlife.jfif",
+                folder: "poprock",
+                lyrics: []
+            },	
+			{
+                title: "Cry (Pop Punk Version)",
+                artist: "Mandy Moore",
+                duration: "3:48",
+                src: "./poprock/Cry (Pop Punk Version).mp3",
+                albumArt: "./album-art/Mandy Moore.jfif",
+                folder: "poprock",
+                lyrics: []
+            },	
+			{
+                title: "Don’t Say You Love Me (Pop Punk Rock Version)",
+                artist: "M2M",
+                duration: "3:16",
+                src: "./poprock/Don’t Say You Love Me (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/M2M.jfif",
+                folder: "poprock",
+                lyrics: []
+            },	
+			{
+                title: "I Wanna Be With You (Pop Punk Rock Version)",
+                artist: "Mandy Moore",
+                duration: "4:15",
+                src: "./poprock/I Wanna Be With You (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Mandy Moore.jfif",
+                folder: "poprock",
+                lyrics: []
+            },	
+			{
+                title: "Only Hope (Pop Punk Rock Version)",
+                artist: "Mandy Moore",
+                duration: "3:13",
+                src: "./poprock/Only Hope (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Mandy Moore.jfif",
+                folder: "poprock",
+                lyrics: []
+            },
+				{
+                title: "I'm All About You (Pop Punk Rock Version)",
+                artist: "Aaron Carter",
+                duration: "3:22",
+                src: "./poprock/I'm All About You (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/Aaron Carter.jfif",
+                folder: "poprock",
+                lyrics: []
+            },
+			{
+                title: "If Life Is So Short (Pop Punk Rock Version)",
+                artist: "The Moffats",
+                duration: "4:04",
+                src: "./poprock/If Life Is So Short (Pop Punk Rock Version).mp3",
+                albumArt: "./album-art/The Moffats.jfif",
+                folder: "poprock",
+                lyrics: []
+            }
+			
+			
+			
+			
+			
+			
+			
+			
+        ];
 
         // DOM elements
         const songListElement = document.getElementById('song-list');
@@ -956,6 +851,9 @@
         const expandedVolumeLevel = document.getElementById('expanded-volume-level');
         const closeExpandedBtn = document.getElementById('close-expanded');
         const lyricsSection = document.getElementById('lyrics-section');
+        const themeToggle = document.getElementById('theme-toggle');
+        const folderButtons = document.querySelectorAll('.folder-btn');
+        const folderTitle = document.getElementById('folder-title');
 
         // Audio context and elements
         const audio = new Audio();
@@ -963,6 +861,7 @@
         let isPlaying = false;
         let isShuffled = false;
         let isRepeating = false;
+        let currentFolder = 'all';
 
         // Initialize the player
         function initPlayer() {
@@ -978,6 +877,18 @@
             expandedVolumeBar.addEventListener('click', setVolume);
             closeExpandedBtn.addEventListener('click', closeExpandedPlayer);
             miniPlayerElement.addEventListener('click', openExpandedPlayer);
+            themeToggle.addEventListener('click', toggleTheme);
+            
+            // Folder selection
+            folderButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    folderButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentFolder = button.dataset.folder;
+                    updateFolderTitle();
+                    renderPlaylist();
+                });
+            });
             
             audio.addEventListener('timeupdate', updateProgress);
             audio.addEventListener('ended', playNext);
@@ -993,13 +904,46 @@
             }, 1000);
         }
 
+        // Toggle theme
+        function toggleTheme() {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            
+            // Update theme icon
+            themeToggle.innerHTML = newTheme === 'light' ? 
+                '<i class="fas fa-sun"></i>' : 
+                '<i class="fas fa-moon"></i>';
+        }
+
+        // Update folder title
+        function updateFolderTitle() {
+            const titles = {
+                'all': 'All Songs',
+                'opm': 'OPM Favorites',
+                'poprock': 'Pop Rock Versions'
+            };
+            folderTitle.textContent = titles[currentFolder];
+        }
+
+        // Filter songs by folder
+        function getFilteredSongs() {
+            if (currentFolder === 'all') {
+                return musicLibrary;
+            }
+            return musicLibrary.filter(song => song.folder === currentFolder);
+        }
+
         // Render playlist
         function renderPlaylist() {
             // Simulate loading delay
             setTimeout(() => {
                 loadingSongsElement.style.display = 'none';
+                songListElement.innerHTML = '';
                 
-                musicLibrary.forEach((song, index) => {
+                const filteredSongs = getFilteredSongs();
+                
+                filteredSongs.forEach((song, index) => {
                     const li = document.createElement('li');
                     li.className = 'song-item fade-in';
                     li.style.animationDelay = `${index * 0.1}s`;
@@ -1014,13 +958,17 @@
                     li.addEventListener('click', () => playSong(index));
                     songListElement.appendChild(li);
                 });
-            }, 1500);
+            }, 500);
         }
 
         // Load song
         function loadSong(index) {
-            const song = musicLibrary[index];
-            currentSongIndex = index;
+            const filteredSongs = getFilteredSongs();
+            const song = filteredSongs[index];
+            
+            // Find the actual index in the full library
+            const actualIndex = musicLibrary.findIndex(s => s.title === song.title && s.artist === song.artist);
+            currentSongIndex = actualIndex;
             
             // Update mini player
             miniAlbumArtElement.src = song.albumArt;
@@ -1189,24 +1137,21 @@
             miniPlayerElement.classList.remove('minimized');
         }
 
+        // Update time display
+        function updateTimeOnly() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString(); 
+            document.getElementById('time-only').textContent = timeString;
+        }
+
         // Initialize the player when DOM is loaded
         document.addEventListener('DOMContentLoaded', initPlayer);
-		
-		
-		
-		 function updateTimeOnly() {
-        const now = new Date();
-        // Use toLocaleTimeString() to get only the time part
-        const timeString = now.toLocaleTimeString(); 
-        document.getElementById('time-only').textContent = timeString;
-    }
+        
+        // Run the function once immediately
+        updateTimeOnly();
 
-    // Run the function once immediately
-    updateTimeOnly();
-
-    // Set the function to run every 1000 milliseconds (1 second)
-    setInterval(updateTimeOnly, 1000);
-		
+        // Set the function to run every 1000 milliseconds (1 second)
+        setInterval(updateTimeOnly, 1000);
     </script>
 </body>
 </html>
